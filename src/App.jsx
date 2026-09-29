@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
+  Waves,
   Menu as MenuIcon,
   X,
   Salad,
@@ -14,6 +15,9 @@ import {
 } from "lucide-react";
 import "./App.css";
 
+import imgRoda from "./assets/img/roda de crepe.png";
+import imgMontagem from "./assets/img/montagem crepe.png";
+import videoMontagem from "./assets/img/vIdeo-MontagenCrepe.mp4";
 import minhaLogo from './assets/img/logo-creperia.jpg';
 import imgLamberto from "./assets/img/lamberto.png";
 import imgPrumirim from "./assets/img/prumirim.png";
@@ -162,18 +166,146 @@ function Header() {
 function Hero() {
   return (
     <section id="inicio" className="hero">
-      <div className="container hero__inner">
-        <h1 className="hero__title">Crepe Francês Artesanal em Ubatuba</h1>
-        <p className="hero__subtitle">
-          Desde 2022 transformando ingredientes em sorrisos. Doces &amp; Salgados.
-        </p>
-        <button className="btn-primary" onClick={() => scrollToSection("cardapio")}>
-          Ver Cardápio
-        </button>
+      <div className="container hero__grid">
+        <div className="hero__text">
+          <span className="hero__note">feito na hora, pertinho do mar</span>
+          <h1 className="hero__title">
+            Crepe Francês <em>Artesanal</em> em Ubatuba
+          </h1>
+          <p className="hero__subtitle">
+            Desde 2022 transformando ingredientes em sorrisos. Doces &amp; Salgados.
+          </p>
+          <div className="hero__actions">
+            <button className="btn-primary" onClick={() => scrollToSection("cardapio")}>
+              Ver Cardápio
+            </button>
+            <button className="btn-ghost" onClick={() => scrollToSection("localizacao")}>
+              Onde estamos
+            </button>
+          </div>
+        </div>
+
+        <div className="hero__visual">
+          <div className="hero__photo">
+            <img src={imgRoda} alt="Bandeja com crepes doces e salgados da Creperia Caiçara" />
+          </div>
+          <svg className="hero__seal" viewBox="0 0 120 120" aria-hidden="true">
+            <defs>
+              <path id="seal-path" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" />
+            </defs>
+            <circle cx="60" cy="60" r="58" className="hero__seal-bg" />
+            <text className="hero__seal-ring">
+              <textPath href="#seal-path">crepe artesanal • doces &amp; salgados •</textPath>
+            </text>
+            <text x="60" y="58" textAnchor="middle" className="hero__seal-small">desde</text>
+            <text x="60" y="80" textAnchor="middle" className="hero__seal-year">2022</text>
+          </svg>
+        </div>
       </div>
       <svg className="hero__wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
         <path d="M0,45 C240,95 480,0 720,40 C960,80 1200,10 1440,50 L1440,90 L0,90 Z" />
       </svg>
+    </section>
+  );
+}
+
+const FAIXA = [
+  "Crepe francês artesanal",
+  "Doces & salgados",
+  "Praia da Santa Rita",
+  "Feito na hora",
+  "Praia Grande",
+  "Ubatuba, SP",
+];
+
+function Faixa() {
+  return (
+    <div className="marquee-wrap" aria-hidden="true">
+      <div className="marquee">
+        <div className="marquee__track">
+          {[0, 1].map((n) => (
+            <div className="marquee__group" key={n}>
+              {FAIXA.map((t) => (
+                <span className="marquee__item" key={t}>
+                  <Waves size={18} />
+                  {t}
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const PASSOS = [
+  { titulo: "Massa fininha na chapa", texto: "A massa é espalhada na hora e dourada até ficar leve e crocante nas bordas." },
+  { titulo: "Recheio generoso", texto: "Nutella, Oreo, morango, costela, catupiry... você escolhe e a gente capricha." },
+  { titulo: "Dobrado no cone", texto: "Sai quentinho, no cone de papel, pronto para comer com a mão e o pé na areia." },
+];
+
+function VideoMontagem() {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) v.play().catch(() => {});
+        else v.pause();
+      },
+      { threshold: 0.5 }
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <video
+      ref={ref}
+      className="processo__video"
+      src={videoMontagem}
+      poster={imgMontagem}
+      muted
+      loop
+      playsInline
+      controls
+      preload="metadata"
+    />
+  );
+}
+
+function Processo() {
+  return (
+    <section id="processo" className="processo">
+      <div className="container processo__grid">
+        <div className="processo__media">
+          <div className="processo__phone">
+            <VideoMontagem />
+          </div>
+          <span className="processo__note">olha a mágica acontecendo</span>
+        </div>
+
+        <div className="processo__text">
+          <h2 className="section-title section-title--left">Feito na sua frente, sem pressa</h2>
+          <p className="processo__lead">
+            Aqui não tem crepe pronto esperando na fila. Cada um é montado na hora, do jeitinho que você pedir.
+          </p>
+          <ol className="passos">
+            {PASSOS.map((p, i) => (
+              <li className="passo" key={p.titulo}>
+                <span className="passo__num">{i + 1}</span>
+                <div>
+                  <h3 className="passo__title">{p.titulo}</h3>
+                  <p className="passo__text">{p.texto}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
     </section>
   );
 }
@@ -188,6 +320,7 @@ function CrepeCard({ crepe, variante, onOpen }) {
       aria-haspopup="dialog"
     >
       <span className="crepe-card__media">
+        <span className="crepe-card__tag">{variante === "doce" ? "Doce" : "Salgado"}</span>
         {imagem ? (
           <img src={imagem} alt={`Crepe ${nome}`} loading="lazy" />
         ) : (
@@ -396,7 +529,9 @@ export default function App() {
       <Header />
       <main>
         <Hero />
+        <Faixa />
         <Cardapio />
+        <Processo />
         <Localizacao />
       </main>
       <Footer />
