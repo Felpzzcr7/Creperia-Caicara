@@ -157,6 +157,15 @@ function Header() {
               {link.label}
             </a>
           ))}
+          <a
+            className="nav__link nav__link--instagram"
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Instagram size={18} aria-hidden="true" />
+            Instagram
+          </a>
         </nav>
       </div>
     </header>

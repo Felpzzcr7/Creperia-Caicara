@@ -1043,3 +1043,26 @@ a {
   margin-top: auto;
   padding-top: 6px;
 }
+
+/* Link do Instagram no menu */
+.nav__link--instagram {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .nav__link--instagram {
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: var(--mar-profundo);
+    color: var(--areia);
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .nav__link--instagram:hover {
+    background: var(--mar-forte);
+    color: var(--branco);
+    transform: translateY(-1px);
+  }
+}
